@@ -1,0 +1,27 @@
+name: Auto Update Repo
+on:
+  push:
+    branches:
+      - main  # Triggers only when you push to the main branch
+
+permissions:
+  contents: write  # Grants permission to make changes back to the repo
+
+jobs:
+  update-task:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4  # Clones your repo into the runner
+
+      - name: Run a Task
+        run: |
+          echo "Last updated on: $(date)" > last_push_log.txt
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "Kishan Miskin"
+          git config --global user.email "kishanmiskinn@gmail.com"
+          git add .
+          git commit -m "Automated update from GitHub Actions" || echo "No changes to commit"
+          git push
